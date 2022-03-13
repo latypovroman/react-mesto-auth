@@ -1,3 +1,4 @@
+import React from 'react';
 import Header from './Header.js';
 import Main from './Main.js';
 import Footer from './Footer.js';
@@ -6,13 +7,40 @@ import ImagePopup from './ImagePopup.js';
 
 
 function App() {
+
+  const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = React.useState(false);
+  const [isAddPlacePopupOpen, setIsAddPlacePopupOpen] = React.useState(false);
+  const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] = React.useState(false);
+
+  const handleEditAvatarClick = () => {
+    setIsEditAvatarPopupOpen(true);
+  }
+
+  const handleEditProfileClick = () => {
+    setIsEditProfilePopupOpen(true);
+  }
+
+  const handleAddPlaceClick = () => {
+    setIsAddPlacePopupOpen(true);
+  }
+
+  const closeAllPopups = () => {
+    setIsAddPlacePopupOpen(false);
+    setIsEditProfilePopupOpen(false);
+    setIsEditAvatarPopupOpen(false);
+  }
+
   return (
   <div class="page">
     <Header />
-    <Main />
+    <Main
+      onEditProfile={handleEditAvatarClick}
+      onAddPlace={handleAddPlaceClick}
+      onEditAvatar={handleEditProfileClick}
+    />
     <Footer />
 
-    <PopupWithForm name="profile" title="Редактировать профиль" buttonText="Сохранить">
+    <PopupWithForm name="profile" title="Редактировать профиль" buttonText="Сохранить" isOpen={isEditProfilePopupOpen} onClose={closeAllPopups}>
       <input  className="popup__input"
               type="text"
               id="nickname"
@@ -33,7 +61,7 @@ function App() {
       <span className="popup__error" id="description-error"></span>
     </PopupWithForm>
 
-    <PopupWithForm name="add-card" title="Новое место" buttonText="Создать">
+    <PopupWithForm name="add-card" title="Новое место" buttonText="Создать" isOpen={isAddPlacePopupOpen} onClose={closeAllPopups}>
       <input  className="popup__input"
               type="text"
               id="title"
@@ -52,7 +80,7 @@ function App() {
       <span className="popup__error" id="link-error"></span>
     </PopupWithForm>
 
-    <PopupWithForm name="user-photo" title="Обновить аватар" buttonText="Сохранить">
+    <PopupWithForm name="user-photo" title="Обновить аватар" buttonText="Сохранить" isOpen={isEditAvatarPopupOpen} onClose={closeAllPopups}>
       <input  className="popup__input"
               type="url"
               id="avatar"
