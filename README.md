@@ -13,4 +13,5 @@
 
 
 [Ссылка на GitHub Pages](https://latypovroman.github.io/mesto-react/)
+
 [Также есть версия приложения на Native JS](https://latypovroman.github.io/mesto/)

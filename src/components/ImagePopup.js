@@ -1,4 +1,7 @@
 function ImagePopup(props) {
+
+  if (!props.card) return null;
+
   return (
     <div className={props.card ? "popup popup_type_open-image popup_opened" : "popup popup_type_open-image"}>
       <div className="popup__image-container">
