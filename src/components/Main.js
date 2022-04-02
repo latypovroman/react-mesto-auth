@@ -9,6 +9,39 @@ function Main({onEditProfile, onAddPlace, onEditAvatar, onCardClick}) {
 
   const currentUser = React.useContext(CurrentUserContext);
 
+  function handleCardLike(card) {
+
+    const isLiked = card.likes.some(user => user._id === currentUser._id);
+
+    function setLikeState(newCard) {
+
+      setCards((state) =>
+        state.map((stateCard) => stateCard._id === card._id ? newCard : stateCard))
+
+    }
+
+    if (isLiked) {
+
+      api.deleteLike(card)
+      .then((newCard) => {
+        setLikeState(newCard)
+      })
+
+    } else {
+
+      api.putLike(card)
+      .then((newCard) => {
+        setLikeState(newCard)
+      })
+    }
+  }
+
+  function handleCardDelete(card) {
+    api.deleteCard(card)
+    .then(() => {
+      setCards((state) => state.filter((stateCard) => stateCard !== card))})
+  }
+
   function fetchInitialCards() {
     return api.getInitialCards()
            .then((data) => {
@@ -38,7 +71,7 @@ function Main({onEditProfile, onAddPlace, onEditAvatar, onCardClick}) {
       <section className="cards" aria-label="Места России">
         <ul className="cards__list">
           {cards.map((card) => {
-            return <Card card={card} key={card._id} onCardClick={onCardClick}/>
+            return <Card card={card} key={card._id} onCardClick={onCardClick} onCardLike={handleCardLike} onCardDelete={handleCardDelete}/>
           })}
         </ul>
       </section>
