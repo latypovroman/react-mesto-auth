@@ -20,13 +20,13 @@ class Api {
     }).then(this._isResOk);
   }
 
-  patchUserInfo(data) {
+  patchUserInfo({name, about}) {
     return fetch(`${this._url}/users/me`, {
       method: "PATCH",
       headers: this._headers,
       body: JSON.stringify({
-        name: data.nickname,
-        about: data.description,
+        name,
+        about
       }),
     }).then(this._isResOk);
   }
@@ -63,12 +63,12 @@ class Api {
     }).then(this._isResOk);
   }
 
-  patchUserAvatar(data) {
+  patchUserAvatar({avatar}) {
     return fetch(`${this._url}/users/me/avatar`, {
       method: "PATCH",
       headers: this._headers,
       body: JSON.stringify({
-        avatar: data.link,
+        avatar
       }),
     }).then(this._isResOk);
   }
