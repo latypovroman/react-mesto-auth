@@ -9,15 +9,15 @@ function EditProfilePopup({isOpen, onClose, onUpdateUser}) {
   const [nickname, setNickname] = React.useState('');
   const [description, setDescription] = React.useState('');
 
-  function handleChangeName(evt) {
+  const handleChangeName = (evt) => {
     setNickname(evt.target.value);
   }
 
-  function handleChangeDescription(evt) {
+  const handleChangeDescription = (evt) => {
     setDescription(evt.target.value);
   }
 
-  function handleSubmit(evt) {
+  const handleSubmit = (evt) => {
 
     evt.preventDefault();
 
