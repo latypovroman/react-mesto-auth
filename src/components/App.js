@@ -157,9 +157,26 @@ function App() {
     setIsDeletePopupOpen(null);
   }
 
+  const handleSpaceClick = (evt) => {
+    if (evt.target.classList.contains('popup_opened')) {
+      closeAllPopups();
+    }
+    if (evt.target.classList.contains('popup__close')) {
+      closeAllPopups();
+    }
+  }
+
+  const handleEscClose = (evt) => {
+    if (evt.key === 'Escape') {
+      closeAllPopups();
+      console.log(1)
+    }
+  }
+
+
   return (
     <CurrentUserContext.Provider value={currentUser}>
-      <div className="page">
+      <div className="page" onClick={handleSpaceClick} onKeyDown={handleEscClose}>
         <Header />
         <Main
           onEditProfile={handleEditProfileClick}
