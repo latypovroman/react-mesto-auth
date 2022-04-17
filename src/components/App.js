@@ -1,4 +1,6 @@
 import React from 'react';
+import { Redirect, Route, Switch, useHistory } from 'react-router-dom';
+import ProtectedRoute from "./ProtectedRoute.js";
 import Header from './Header.js';
 import Main from './Main.js';
 import Footer from './Footer.js';
@@ -9,6 +11,8 @@ import EditAvatarPopup from './EditAvatarPopup.js';
 import AddPlacePopup from './AddPlacePopup.js';
 import { CurrentUserContext } from '../contexts/CurrentUserContext.js';
 import DeletePopup from './DeletePopup.js';
+import Login from "./Login";
+import Register from "./Register";
 
 
 function App() {
@@ -21,6 +25,7 @@ function App() {
   const [cardForDelete, setCardForDelete] = React.useState(null);
   const [currentUser, setCurrentUser] = React.useState({});
   const [cards, setCards] = React.useState([]);
+  const [loggedIn, setLoggedIn] = React.useState(false);
 
   function fetchInitialCards() {
     return api.getInitialCards()
@@ -108,18 +113,15 @@ function App() {
 
     const isLiked = card.likes.some(user => user._id === currentUser._id);
 
-    // const setLikeState = (newCard) => {
-    //   setCards((state) =>
-    //     state.map((stateCard) => stateCard._id === card._id ? newCard : stateCard))
-    // }
+    const setLikeState = (newCard) => {
+      setCards((state) =>
+        state.map((stateCard) => stateCard._id === card._id ? newCard : stateCard))
+    }
 
     if (isLiked) {
 
       api.deleteLike(card)
-      .then((newCard) => {
-        setCards((state) =>
-        state.map((stateCard) => stateCard._id === card._id ? newCard : stateCard))
-      })
+      .then((newCard) => setLikeState(newCard))
       .catch((data) =>{
         console.log(data)
       })
@@ -127,10 +129,7 @@ function App() {
     } else {
 
       api.putLike(card)
-      .then((newCard) => {
-        setCards((state) =>
-        state.map((stateCard) => stateCard._id === card._id ? newCard : stateCard))
-      })
+      .then((newCard) => setLikeState(newCard))
       .catch((data) =>{
         console.log(data)
       })
@@ -178,15 +177,29 @@ function App() {
     <CurrentUserContext.Provider value={currentUser}>
       <div className="page" onClick={handleSpaceClick} onKeyDown={handleEscClose}>
         <Header />
-        <Main
-          onEditProfile={handleEditProfileClick}
-          onAddPlace={handleAddPlaceClick}
-          onEditAvatar={handleEditAvatarClick}
-          onCardClick={handleCardClick}
-          cards={cards}
-          onCardLike={handleCardLike}
-          onCardDelete={handleDeleteButtonClick}
-        />
+        <Switch>
+          <ProtectedRoute
+            exact path='/'
+            component={Main}
+            loggedIn={loggedIn}
+            onEditProfile={handleEditProfileClick}
+            onAddPlace={handleAddPlaceClick}
+            onEditAvatar={handleEditAvatarClick}
+            onCardClick={handleCardClick}
+            cards={cards}
+            onCardLike={handleCardLike}
+            onCardDelete={handleDeleteButtonClick}
+          />
+          <Route path='/sign-in'>
+            <Login />
+          </Route>
+          <Route path='/sign-up'>
+            <Register />
+          </Route>
+          <Route path=''>
+            {loggedIn ? <Redirect to='/' /> : <Redirect to='/sign-in' />}
+          </Route>
+        </Switch>
         <Footer />
 
         <EditProfilePopup isOpen={isEditProfilePopupOpen} onClose={closeAllPopups} onUpdateUser={handleUpdateUser} />
