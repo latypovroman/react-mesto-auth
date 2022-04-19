@@ -114,17 +114,21 @@ function App() {
 
   const handleRegister = (email, password) => {
     auth.register(email, password)
+      .then(() => history.replace({ pathname: "/login" }))
+      .catch(res => console.log(res))
+  }
+
+  const handleLogin = (email, password) => {
+    auth.authorize(email, password)
       .then((data) => {
-        console.log(data)
-        localStorage.setItem('jwt', data.jwt);
+        localStorage.setItem('jwt', data.token)
         setAuthData({
           ...authData,
-          email: data.data.email,
+          email: data.email,
         });
         setLoggedIn(true);
-        history.replace({ pathname: "/" })
+        history.replace({ pathname: "/" });
       })
-      .catch(res => console.log(res))
   }
 
 
@@ -210,7 +214,7 @@ function App() {
             onCardDelete={handleDeleteButtonClick}
           />
           <Route path='/sign-in'>
-            <Login />
+            <Login handleLogin={handleLogin}/>
           </Route>
           <Route path='/sign-up'>
             <Register handleRegister={handleRegister}/>
