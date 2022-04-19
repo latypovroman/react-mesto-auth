@@ -58,13 +58,15 @@ function App() {
     if (jwt) {
       return auth.getContent(jwt)
         .then((data) => {
+          console.log(data)
           setAuthData({
             ...authData,
-            email: data.email,
+            email: data.data.email,
           });
           setLoggedIn(true);
           history.push( "/" );
         })
+        .catch(res => console.log(res))
     }
   }
 
@@ -75,7 +77,7 @@ function App() {
 
   useEffect(() => {
     tokenCheck();
-  }, []);
+  }, [loggedIn]);
 
   const handleEditAvatarClick = () => {
     setIsEditAvatarPopupOpen(true);
@@ -148,6 +150,18 @@ function App() {
         setLoggedIn(true);
         history.replace({ pathname: "/" });
       })
+      .catch(res => console.log(res))
+  }
+
+  const signOut = () => {
+    localStorage.removeItem('jwt');
+    setLoggedIn(false);
+    history.replace({ pathname: "/sign-in" });
+    setAuthData({
+      password: '',
+      email: ''
+    });
+
   }
 
 
@@ -218,7 +232,7 @@ function App() {
   return (
     <CurrentUserContext.Provider value={currentUser}>
       <div className="page" onClick={handleSpaceClick} onKeyDown={handleEscClose}>
-        <Header />
+        <Header loggedIn={loggedIn} email={authData.email} signOut={signOut}/>
         <Switch>
           <ProtectedRoute
             exact path='/'
