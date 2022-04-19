@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import { Redirect, Route, Switch, useHistory } from 'react-router-dom';
 import ProtectedRoute from "./ProtectedRoute.js";
 import Header from './Header.js';
@@ -53,10 +53,29 @@ function App() {
           })
   }
 
+  function tokenCheck() {
+    const jwt = localStorage.getItem('jwt')
+    if (jwt) {
+      return auth.getContent(jwt)
+        .then((data) => {
+          setAuthData({
+            ...authData,
+            email: data.email,
+          });
+          setLoggedIn(true);
+          history.push( "/" );
+        })
+    }
+  }
+
   React.useEffect(() => {
     fetchInitialCards();
     fetchUserInfo();
   }, [])
+
+  useEffect(() => {
+    tokenCheck();
+  }, []);
 
   const handleEditAvatarClick = () => {
     setIsEditAvatarPopupOpen(true);

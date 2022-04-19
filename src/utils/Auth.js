@@ -32,7 +32,7 @@ export const authorize = (email, password) => {
 }
 
 export const getContent = (token) => {
-  return fetch(`${url}/users/me`, {
+  return fetch(`${url}users/me`, {
     method: "GET",
     headers: {
       Accept: "application/json",
