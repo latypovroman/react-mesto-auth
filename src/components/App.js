@@ -13,10 +13,12 @@ import { CurrentUserContext } from '../contexts/CurrentUserContext.js';
 import DeletePopup from './DeletePopup.js';
 import Login from "./Login";
 import Register from "./Register";
+import * as auth from "../utils/Auth";
 
 
 function App() {
 
+  const history = useHistory();
   const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = React.useState(false);
   const [isAddPlacePopupOpen, setIsAddPlacePopupOpen] = React.useState(false);
   const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] = React.useState(false);
@@ -26,6 +28,10 @@ function App() {
   const [currentUser, setCurrentUser] = React.useState({});
   const [cards, setCards] = React.useState([]);
   const [loggedIn, setLoggedIn] = React.useState(false);
+  const [authData, setAuthData] = React.useState({
+    email: "",
+    password: "",
+  })
 
   function fetchInitialCards() {
     return api.getInitialCards()
@@ -106,7 +112,20 @@ function App() {
     })
   }
 
-
+  const handleRegister = (email, password) => {
+    auth.register(email, password)
+      .then((data) => {
+        console.log(data)
+        localStorage.setItem('jwt', data.jwt);
+        setAuthData({
+          ...authData,
+          email: data.data.email,
+        });
+        setLoggedIn(true);
+        history.replace({ pathname: "/" })
+      })
+      .catch(res => console.log(res))
+  }
 
 
   const handleCardLike = (card) => {
@@ -194,7 +213,7 @@ function App() {
             <Login />
           </Route>
           <Route path='/sign-up'>
-            <Register />
+            <Register handleRegister={handleRegister}/>
           </Route>
           <Route path=''>
             {loggedIn ? <Redirect to='/' /> : <Redirect to='/sign-in' />}
