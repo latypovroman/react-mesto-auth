@@ -50,3 +50,11 @@
 @import url(./blocks/popup/__image-container/popup__image-container.css);
 @import url(./blocks/popup/__error/popup__error.css);
 @import url(./blocks/popup/__error/_active/popup__error_active.css);
+
+@import url(./blocks/sign/sign.css);
+@import url(./blocks/sign/__form/sign__form.css);
+@import url(./blocks/sign/__title/sign__title.css);
+@import url(./blocks/sign/__input/sign__input.css);
+@import url(./blocks/sign/__button/sign__button.css);
+@import url(./blocks/sign/__redirect-text/sign__redirect-text.css);
+@import url(./blocks/sign/__redirect-link/sign__redirect-link.css);
