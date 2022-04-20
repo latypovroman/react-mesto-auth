@@ -14,6 +14,7 @@ import DeletePopup from './DeletePopup.js';
 import Login from "./Login";
 import Register from "./Register";
 import * as auth from "../utils/Auth";
+import SignupPopup from "./SignupPopup";
 
 
 function App() {
@@ -23,11 +24,13 @@ function App() {
   const [isAddPlacePopupOpen, setIsAddPlacePopupOpen] = React.useState(false);
   const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] = React.useState(false);
   const [isDeletePopupOpen, setIsDeletePopupOpen] = React.useState(false);
+  const [isSignupPopupOpen, setIsSignupPopupOpen] = React.useState(false);
   const [selectedCard, setSelectedCard] = React.useState(null);
   const [cardForDelete, setCardForDelete] = React.useState(null);
   const [currentUser, setCurrentUser] = React.useState({});
   const [cards, setCards] = React.useState([]);
   const [loggedIn, setLoggedIn] = React.useState(false);
+  const [regStatus, setRegStatus] = React.useState(null);
   const [authData, setAuthData] = React.useState({
     email: "",
     password: "",
@@ -135,8 +138,16 @@ function App() {
 
   const handleRegister = (email, password) => {
     auth.register(email, password)
-      .then(() => history.replace({ pathname: "/login" }))
-      .catch(res => console.log(res))
+      .then(() => {
+        history.replace({ pathname: "/login" });
+        setRegStatus(true);
+        setIsSignupPopupOpen(true);
+      })
+      .catch(res => {
+        console.log(res);
+        setRegStatus(false);
+        setIsSignupPopupOpen(true);
+      })
   }
 
   const handleLogin = (email, password) => {
@@ -163,7 +174,6 @@ function App() {
     });
 
   }
-
 
   const handleCardLike = (card) => {
 
@@ -208,6 +218,7 @@ function App() {
     setIsAddPlacePopupOpen(false);
     setIsEditProfilePopupOpen(false);
     setIsEditAvatarPopupOpen(false);
+    setIsSignupPopupOpen(false);
     setSelectedCard(null);
     setIsDeletePopupOpen(null);
   }
@@ -259,10 +270,11 @@ function App() {
         <Footer />
 
         <EditProfilePopup isOpen={isEditProfilePopupOpen} onClose={closeAllPopups} onUpdateUser={handleUpdateUser} />
-        <AddPlacePopup isOpen={isAddPlacePopupOpen} onClose={closeAllPopups} onAddPlace={handleAddPlaceSubmit}/>
+        <AddPlacePopup isOpen={isAddPlacePopupOpen} onClose={closeAllPopups} onAddPlace={handleAddPlaceSubmit} />
         <EditAvatarPopup isOpen={isEditAvatarPopupOpen} onClose={closeAllPopups} onUpdateAvatar={handleUpdateAvatar} />
-        <DeletePopup card={cardForDelete} isOpen={isDeletePopupOpen} onClose={closeAllPopups} onCardDelete={handleCardDelete}/>
-        <ImagePopup card={selectedCard} onClose={closeAllPopups}/>
+        <DeletePopup card={cardForDelete} isOpen={isDeletePopupOpen} onClose={closeAllPopups} onCardDelete={handleCardDelete} />
+        <ImagePopup card={selectedCard} onClose={closeAllPopups} />
+        <SignupPopup isOpen={isSignupPopupOpen} onClose={closeAllPopups} regStatus={regStatus} />
       </div>
     </CurrentUserContext.Provider>
   );
