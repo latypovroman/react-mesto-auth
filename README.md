@@ -30,6 +30,6 @@ HTML.
 
 
 
-[Ссылка на GitHub Pages](https://latypovroman.github.io/mesto-react/)
+[Ссылка на GitHub Pages](https://latypovroman.github.io/react-mesto-auth/)
 
 [Также есть версия приложения на Native JS (ООП)](https://latypovroman.github.io/mesto/)
