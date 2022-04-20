@@ -41,5 +41,5 @@
   "devDependencies": {
     "gh-pages": "^3.2.3"
   },
-  "homepage": "https://latypovroman.github.io/react-mesto-auth/"
+  "homepage": "react-mesto-auth-six.vercel.app"
 }
