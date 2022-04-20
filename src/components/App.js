@@ -37,7 +37,7 @@ function App() {
   })
 
   function fetchInitialCards() {
-    return api.getInitialCards()
+            api.getInitialCards()
            .then((data) => {
              setCards(data);
            })
@@ -47,7 +47,7 @@ function App() {
   }
 
   function fetchUserInfo() {
-    return api.getUserInfo()
+            api.getUserInfo()
            .then((data) => {
               setCurrentUser(data);
            })
@@ -74,8 +74,10 @@ function App() {
   }
 
   React.useEffect(() => {
-    fetchInitialCards();
-    fetchUserInfo();
+    if (loggedIn) {
+      fetchInitialCards();
+      fetchUserInfo();
+    }
   }, [])
 
   useEffect(() => {
@@ -139,7 +141,7 @@ function App() {
   const handleRegister = (email, password) => {
     auth.register(email, password)
       .then(() => {
-        history.replace({ pathname: "/login" });
+        history.push("/login");
         setRegStatus(true);
         setIsSignupPopupOpen(true);
       })
@@ -161,7 +163,11 @@ function App() {
         setLoggedIn(true);
         history.replace({ pathname: "/" });
       })
-      .catch(res => console.log(res))
+      .catch(res => {
+        console.log(res);
+        setRegStatus(false);
+        setIsSignupPopupOpen(true);
+      })
   }
 
   const signOut = () => {
