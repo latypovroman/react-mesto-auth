@@ -1,5 +1,6 @@
 import React from 'react';
 import {Link} from "react-router-dom";
+import SignForm from "./SignForm";
 
 const Register = ({ handleRegister }) => {
 
@@ -22,7 +23,7 @@ const Register = ({ handleRegister }) => {
   }
 
   return (
-      <section className="sign">
+    <section className="sign">
       <form className="sign__form">
         <h2 className="sign__title">Регистрация</h2>
         <input

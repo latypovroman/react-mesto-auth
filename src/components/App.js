@@ -61,12 +61,12 @@ function App() {
     if (jwt) {
       return auth.getContent(jwt)
         .then((data) => {
-          console.log(data)
           setAuthData({
             ...authData,
             email: data.data.email,
           });
           setLoggedIn(true);
+          console.log(loggedIn)
           history.push( "/" );
         })
         .catch(res => console.log(res))
@@ -74,11 +74,13 @@ function App() {
   }
 
   React.useEffect(() => {
+    console.log(loggedIn)
     if (loggedIn) {
+
       fetchInitialCards();
       fetchUserInfo();
     }
-  }, [])
+  }, [loggedIn])
 
   useEffect(() => {
     tokenCheck();
@@ -161,6 +163,7 @@ function App() {
           email: data.email,
         });
         setLoggedIn(true);
+        console.log(loggedIn)
         history.replace({ pathname: "/" });
       })
       .catch(res => {
@@ -241,7 +244,6 @@ function App() {
   const handleEscClose = (evt) => {
     if (evt.key === 'Escape') {
       closeAllPopups();
-      console.log(1)
     }
   }
 
